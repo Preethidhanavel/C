@@ -1,3 +1,4 @@
+//find the next smallest number having same number of set bits as of given number
 #include<stdio.h>
 #include<math.h>
 #define count(n) log2(n)
@@ -13,9 +14,9 @@ int set(int n)
 void find_num(int n)
 {
     int c=set(n);
-    n=n+1;
+    n=n-1;
     while(c!=set(n))
-    n++;
+    n--;
     printf("%d ",n);
 }
 int main()
@@ -26,15 +27,3 @@ int main()
     find_num(n);
 
 }
-
-/*
-10101101
-1011=11
-1010=10
-1010=10
-1001=9
-1000=8
-0111=7
-0000=0
-
-*/
