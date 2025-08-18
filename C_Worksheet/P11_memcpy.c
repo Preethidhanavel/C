@@ -11,12 +11,12 @@ void* my_memcpy(void* dest, const void* src, size_t n) {
     const unsigned char* s = src;   // source pointer (byte-wise)
 
     if (d < s) 
-    { // Case 1: dest is before src → safe to copy forward
+    { // Case 1: dest is before src -> safe to copy forward
         for (size_t i = 0; i < n; i++)
             d[i] = s[i];            // copy byte by byte forward
     } 
     else 
-    {     // Case 2: dest is after src → must copy backward
+    {     // Case 2: dest is after src -> must copy backward
         for (size_t i = n; i > 0; i--)
             d[i-1] = s[i-1];        // copy from end to start
     }

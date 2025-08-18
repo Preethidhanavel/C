@@ -2,7 +2,7 @@
 Problem Statement:
  Safely toggle a specific GPIO bit in a memory-mapped I/O register without 
  race conditions during interrupts*/
- #include <stdio.h>
+#include <stdio.h>
 #include <stdint.h>
 
 // simulate memory-mapped register

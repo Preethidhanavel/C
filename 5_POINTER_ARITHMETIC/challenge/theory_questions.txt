@@ -1,0 +1,46 @@
+1.you are given a pointer to the middle of an integer array. without knowing the sizeof the array or accessing any index variable. 
+how can you find the  number of element before nad after this pointer.
+Ans:The array has a known terminator or delimiter, such as a sentinel value (like 0, -1, or some special marker), 
+otherwise it’s impossible to know where the array begins or ends in memory.
+accessing array beyond memory may lead to undefined behavior.
+
+3.you have a character array that contains a string and you're given only a pointer pointing to a random position within the string. 
+how can you print the string from the begining using only pointer arithmetic.
+Ans: we can traverse through the string forwrad as string will be NULL terminated.the pointer increment will stop after 
+it reached NULL.But without knowing starting index it is unsafe to traverse backward.
+we can consider that string may be started after a string that is the string first character will start after NULL 
+character. but this may not be case that occur everytime.
+
+5.What will happen if you increment a void *pointer using ptr++? why it is disallowed in standard C and how can this be worked 
+around using char *?
+Ans:The compiler will increment  a pointer based on the size of its datatype. the void pointer doesn't have any size. so the 
+compiler will not know how many bytes it has to increment.so, It will produce error.
+char * the sizeof char is fixed as 1byte.so the pointer will increment 1 byte.
+
+7.Given two pointers int *a,int *b pointing to two elements in different arrays, what happens if you subtract them?
+how does the compiler interpret the result?
+Ans:The compiler allows pointer arithmetic difference only when the pointer points to eleemnt of smae memory block, or array.
+so, When perform pointer arithmetic between different memeory this will not be allowed. AS this will violate memory safety rule.
+
+10.You have a pointer to a struct and want to iterate over an array of structs using only pointer arithmetic. 
+how do you correctly account for struct padding and alignment?
+Ans:The pointer arithmetic will automatically handle the struct padding and alignment.
+The compiler automatically advances the pointer by sizeof(struct) which also includes the padding and alignemnt.
+
+11.char arr[] = "abcdef";
+char *p = arr + 3;
+printf("%c", *(p - 1));
+
+
+15.What happens if you do pointer arithmetic across two different malloc’ed blocks? What kind of bugs can arise and 
+how can you avoid them?
+undefined behavior,The result may be garbage, a crash, or even seem to work sometimes,since the memory blocks are unrelated.
+
+17.If char *p = "hello";, what happens when you try *(p + 5) = '!';? Why is this undefined behavior?
+the string literal storage will happen in code section which is constant. modifying a data in it will lead to segmentation fault.
+also '\0' will be replaced to '!' this is also not correct.
+
+19.How can you find the size of an array (not pointer) passed to a function if only a pointer was received, and 
+you're not allowed to use extra parameters?
+In c array passed as an argument will be collected as pointer. so , have to pass additional argument size of an array.
+
