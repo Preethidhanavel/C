@@ -16,7 +16,8 @@ int next(int i)
 }
 
 // Enqueue value into the queue
-int enq(int v) {
+int enq(int v) 
+{
     int n = next(head);       // Compute next position
     if (n == tail) 
         return -1; // Queue is full
