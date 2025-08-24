@@ -4,20 +4,44 @@ Problem Statement:
  race conditions during interrupts*/
 #include <stdio.h>
 #include <stdint.h>
+#include <stdatomic.h>
+#include <pthread.h>
+#include <unistd.h>
 
-// simulate memory-mapped register
+// Simulated MMIO register (volatile because hardware registers change externally)
 volatile uint32_t GPIO_REG = 0;
-#define BIT (1 << 4)
 
-void toggle_bit() {
-    GPIO_REG ^= BIT; // XOR toggles
+// Bit to toggle
+#define GPIO_BIT (1u << 3)   // Bit 3
+
+// Approach 1: Use atomic operations (portable in C11 and later)
+void gpio_toggle_atomic(void) {
+    // XOR bit atomically
+    atomic_fetch_xor((_Atomic uint32_t *)&GPIO_REG, GPIO_BIT);
 }
 
-int main() {
-    printf("Initial GPIO_REG = 0x%X\n", GPIO_REG);
-    toggle_bit();
-    printf("After toggle = 0x%X\n", GPIO_REG);
-    toggle_bit();
-    printf("After toggle again = 0x%X\n", GPIO_REG);
+// Thread function to simulate concurrent access
+void* thread_func(void* arg) {
+    for (int i = 0; i < 5; i++) {
+        gpio_toggle_atomic();
+        printf("Thread %ld toggled: GPIO_REG = 0x%08X\n", (long)arg, GPIO_REG);
+        usleep(100000); // 100 ms
+    }
+    return NULL;
+}
+
+int main(void) {
+    pthread_t t1, t2;
+
+    printf("Initial GPIO_REG = 0x%08X\n", GPIO_REG);
+
+    // Create two threads simulating concurrent toggles
+    pthread_create(&t1, NULL, thread_func, (void*)1);
+    pthread_create(&t2, NULL, thread_func, (void*)2);
+
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    printf("Final GPIO_REG = 0x%08X\n", GPIO_REG);
     return 0;
 }
